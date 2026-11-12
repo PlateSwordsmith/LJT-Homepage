@@ -55,6 +55,8 @@ jobs:
     needs: build
     if: needs.build.outputs.pages_enabled == 'true'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
