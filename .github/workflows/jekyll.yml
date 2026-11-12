@@ -1,63 +1,39 @@
-name: Deploy Jekyll site to Pages
+name: Build Jekyll Site
 
 on:
   push:
     branches: [master]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-24.04
-    outputs:
-      pages_enabled: ${{ steps.pages_configuration.outcome == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
           bundler-cache: true
+
       - name: Install UglifyJS
         run: npm install -g uglify-js
+
       - name: Minify JS files
         run: uglifyjs assets/js/plugins/jquery.greedy-navigation.js assets/js/_main.js assets/js/theme.js -c -m -o assets/js/main.min.js
+
       - name: Build with Jekyll
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
-      - name: Configure GitHub Pages
-        id: pages_configuration
-        continue-on-error: true
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Upload GitHub Pages artifact
-        if: steps.pages_configuration.outcome == 'success'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-  deploy:
-    needs: build
-    if: needs.build.outputs.pages_enabled == 'true'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
