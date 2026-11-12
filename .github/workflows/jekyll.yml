@@ -22,36 +22,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
           bundler-cache: true
-
       - name: Install UglifyJS
         run: npm install -g uglify-js
-
       - name: Minify JS files
         run: uglifyjs assets/js/plugins/jquery.greedy-navigation.js assets/js/_main.js assets/js/theme.js -c -m -o assets/js/main.min.js
-
       - name: Build with Jekyll
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
-
       - name: Configure GitHub Pages
         id: pages_configuration
         continue-on-error: true
         uses: actions/configure-pages@v5
         with:
           enablement: true
-
       - name: Upload GitHub Pages artifact
         if: steps.pages_configuration.outcome == 'success'
         uses: actions/upload-pages-artifact@v3
@@ -64,7 +57,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
