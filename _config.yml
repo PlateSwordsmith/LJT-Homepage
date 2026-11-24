@@ -13,7 +13,7 @@ repository               : "PlateSwordsmith/LJT-Homepage"
 author:
   avatar           : "profile.png"
   name             : "Junteng Liu"
-  bio              : "First-year Ph.D. candidate at HKUST NLP Group"
+  bio              : "First-year PhD candidate at HKUST NLP Group"
   employer         : "Hong Kong University of Science and Technology"
   email            : "jliugi@connect.ust.hk"
   googlescholar    : "https://scholar.google.com/citations?hl=en&user=tbK9jl4AAAAJ&view_op=list_works&sortby=pubdate"
@@ -34,6 +34,10 @@ words_per_minute         : 160
 future                   : true
 read_more                : "disabled"
 talkmap_link             : false
+
+# Social Sharing
+twitter:
+  username               : "junteng88716710"
 
 # Reading Files
 include:
